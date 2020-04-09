@@ -1,0 +1,17 @@
+.stores {
+  overflow: hidden;
+}
+
+.stores .store {
+  animation: appearance 0.5s ease-in; 
+}
+
+@keyframes appearance {
+  from {transform: translateX(-120%);}
+  to {transform: translateX(0);}
+}
+
+.stores .store:hover {
+  background-color: #e7e7e7;
+  cursor: pointer;
+}
