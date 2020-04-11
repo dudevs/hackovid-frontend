@@ -1,13 +1,14 @@
 import React from 'react';
+import './SearchForm.css';
 
 const SearchForm = ({ geoFindMe, findAddress, onInputChange }) => {
 
 
 
   return (
-    <form className="search-form pa3 flex flex-column items-center">
+    <form className="search-form">
       <input
-        className="h2 br3 bw1 pa2 w-100"
+        className="search-input"
         type="text" 
         placeholder="Adreça"
         onChange={ onInputChange }
@@ -15,11 +16,11 @@ const SearchForm = ({ geoFindMe, findAddress, onInputChange }) => {
       ></input>
       <div className="w-100">
         <button
-          className="bw0 br2 bg-blue pv2 white fw1 ttu mv2 w-40 mh2"
+          className="search-button"
           onClick={ findAddress }
         >Buscar adreça</button>
         <button
-          className="bw0 br2 bg-blue pv2 white fw1 ttu mv2 w-40 mh2"
+          className="search-button"
           onClick={ geoFindMe }
         >Localitza'm</button>
         <input type="submit" onSubmit={ findAddress } hidden/>

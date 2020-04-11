@@ -1,22 +1,29 @@
 import React from 'react';
+import { Fragment } from 'react';
 
-const TimePiece = ({ hour, min, color }) => {
-  let oclock = false;
-  let half = false;
-  if(!min) {
-    oclock = true;
-  } else if(min === 30) {
-    half = true;
+const TimePiece = ({ hour, min, votes }) => {
+
+  let color;
+  if (votes === 0) {
+    color = 'gray';
+  };
+  if (votes > 0) {
+    color = 'green';
+  };
+  if (votes < 0) {
+    color = 'red';
+  };
+
+  let timeText = '';
+  if (min === "00" || min === "30") {
+    timeText = (<Fragment>
+      <p>{hour}:{min}</p>
+    </Fragment>)
   }
+
   return (
-    <div className={`hour flex justify-center items-center flex-grow-1 bg-${color} h-100`}>
-      {
-        oclock ? <p className="fixed f6">{hour}:00</p> : null
-      }
-      {
-        half ? <p className="fixed f6">{hour}:{min}</p> : null
-      }
-      {/* <span>{hour}</span> : <span>{min}</span> */}
+    <div className={`time-piece ${color}`}>
+      { timeText }
     </div>
   );
 }

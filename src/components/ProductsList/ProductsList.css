@@ -1,0 +1,92 @@
+.product-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 3.3vw;
+  background-color: #565656;
+  color: transparent;
+  text-shadow: 0px 2px 3px rgba(255,255,255,0.5);
+  -webkit-background-clip: text;
+     -moz-background-clip: text;
+          background-clip: text;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  padding: .5rem 2rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.product-image {
+  width: 10%;
+}
+
+.product-timeline {
+  display: flex;
+  flex-grow: 1;
+  height: 4rem;
+  border-radius: .5rem;
+  overflow: hidden;
+  box-shadow: 10px 10px rgba(0,0,0,0.1);
+}
+
+.vote {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem;
+}
+
+.vote button {
+  font-size: 1rem;
+  text-decoration: none;
+  border: 0 solid rgba(0,0,0,0);
+  border-radius: 2rem;
+  padding: .5rem 1rem;
+  margin: .5rem;
+  opacity: 1;
+  transition: opacity .15s ease-in;
+}
+
+.vote [data-vote="true"] {
+  background-image: linear-gradient(rgb(83, 231, 115), rgb(2, 185, 72));
+}
+.vote [data-vote="false"] {
+  background-image: linear-gradient(rgb(255, 78, 25), rgb(255, 0, 0));
+}
+
+.vote button:hover {
+  opacity: 0.5;
+}
+
+.time-piece {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  width: 2%;
+}
+
+.time-piece p {
+  font-size: small;
+  color: black;
+  position: relative;
+  top: 30px;
+  background: hsla(0, 0%, 100%, 0.5);
+  width: 40px;
+  border-radius: .2rem;
+}
+.green{
+  background-image: linear-gradient(rgb(83, 231, 115), rgb(2, 185, 72));
+}
+
+.red {
+  background-image: linear-gradient(rgb(255, 78, 25), rgb(255, 0, 0));
+}
+
+.gray {
+  background: linear-gradient(rgb(148, 148, 148), rgb(122, 122, 122));
+}

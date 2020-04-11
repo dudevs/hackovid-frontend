@@ -8,11 +8,11 @@ const StoresList = ({ selectStore, nearStores, selectedStore }) => {
   if (selectedStore) {
     storeButton = <StoreButton store={store} selectStore={selectStore}/>
   } else {
-    storeButton = nearStores.map(store => <StoreButton store={store} selectStore={selectStore}/>);
+    storeButton = nearStores.map(store => <StoreButton key={store.id} store={store} selectStore={selectStore}/>);
   }
 
   return (
-    <div className="stores flex flex-column items-center w-100">
+    <div className="stores">
       { storeButton }
     </div>
   );

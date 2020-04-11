@@ -1,33 +1,51 @@
 import React from 'react';
-import { toilet_paper, pasta, rice, vegetables } from '../../../images';
+
+import { baby_food, canned_food, eggs, flour, fruit, hand_soap, milk, oil, pasta, rice, toilet_paper, vegetables, water } from '../../../images';
 import TimePiece from './TimePiece/TimePiece';
 import { fromUnixTime, getUnixTime, startOfMinute, subMinutes } from 'date-fns';
+import { apiCall, handleError } from "../../../lib/utils";
 
 const images = {
-  toilet_paper: toilet_paper,
+  baby_food: baby_food,
+  canned_food: canned_food,
+  eggs: eggs,
+  flour: flour,
+  fruit: fruit,
+  hand_soap: hand_soap,
+  milk: milk,
+  oil: oil,
   pasta: pasta,
   rice: rice,
-  vegetables: vegetables
+  toilet_paper: toilet_paper,
+  vegetables: vegetables,
+  water: water
 }
 
+/* eslint-disable*/
+const hardCodedDate = fromUnixTime(1586485054); // FORMAT DATE Thu Apr 09 2020 19:17:34
+const hardCodedDateLater = fromUnixTime(1586496274); // FORMAT DATE Thu Apr 09 2020 22:24:34
+const currentDate = Math.floor(Date.now()/1000); // FORMAT EPOCH IN SECONDS
+/* eslint-enable */
 
-const hardCodedDate = 1586485054; // Thu Apr 09 2020 19:17:34
+const ProductTimeline = ({ product, state, getTimeline }) => {
 
-const epochToHourMinute = time => [fromUnixTime(time).getHours(), fromUnixTime(time).getMinutes()];
+  const { TIMELINE_SPLIT_COUNT, MINUTES_PER_PIECE } = state.options;
 
-const lastFiveMinute = () => {
-  let lastMinute = startOfMinute(Date.now()); // Date.now()
-  while(lastMinute.getMinutes()%5){
-    lastMinute = subMinutes(lastMinute, 1);
+  const epochToHourMinute = time => { // TAKES EPOCH, RETURNS HOUR,MIN
+    const addZero = i => i<10 ? '0'+i : i.toString();
+    const hours = addZero(fromUnixTime(time).getHours());
+    const mins = addZero(fromUnixTime(time).getMinutes());
+    return [hours, mins];
+  };
+
+  const lastExactMinute = () => {
+    const lastMin = startOfMinute(hardCodedDateLater);
+    return subMinutes(lastMin, lastMin.getMinutes() % MINUTES_PER_PIECE);
   }
-  return lastMinute;
-}
-
-const ProductTimeline = ({ product }) => {
-
-  let timePiece = lastFiveMinute();
+  
+  let timePiece = lastExactMinute();
   let myTimeline = [];
-  [...Array(48)].forEach(() => {
+  [...Array(TIMELINE_SPLIT_COUNT)].forEach(() => {
     const obj = {};
     obj.timestamp = getUnixTime(timePiece)
     const [ doWeHaveIt ] = product.timeline.filter(stamp => stamp.timestamp === obj.timestamp);
@@ -38,7 +56,7 @@ const ProductTimeline = ({ product }) => {
       obj.upvote = 0;
       obj.downvote = 0;
     }
-    timePiece = subMinutes(timePiece, 5);
+    timePiece = subMinutes(timePiece, MINUTES_PER_PIECE);
     myTimeline.unshift(obj);
   });
 
@@ -46,26 +64,52 @@ const ProductTimeline = ({ product }) => {
   const productsList = myTimeline.map(period => {
     const [hour, min] = epochToHourMinute(period.timestamp)
     const votesCount = period.upvote - period.downvote;
-    let color;
-    if (votesCount === 0) {
-      color = 'light-gray';
-    } else if (votesCount > 0) {
-      color = 'green';
-    } else {
-      color = 'red'
-    };
-    return <TimePiece hour={hour} min={min} color={color} />
+    return <TimePiece hour={hour} min={min} votes={votesCount} key={hour+min}/>
   })
 
+  const handleVote = async (e) => {
+    const { product, vote } = e.currentTarget.dataset;
+    const baseEndpoint = `https://localhost:5001/api/supermarket`;
+    const url = `${baseEndpoint}/${state.selectedStore}/basicgood/${product}?status=${vote}`;
+    console.log(url);
+    try{
+      await apiCall('http://www.mocky.io/v2/5e9097eb330000016e27d8f3', {method: 'POST'}).catch(handleError);
+      const newProducts = 'http://www.mocky.io/v2/5e916be53300001455e9ce8d';
+      getTimeline(newProducts);
+    }
+    catch(err){
+      switch(err) {
+        case "400":
+          console.log('Error ' + err);
+          alert('Hi ha hagut un error, prova-ho més tard');
+          break;
+        case "500":    
+        console.log('Error ' + err);
+        alert('El servei no està disponible');
+          break;
+        default:
+          console.log('Error ' + err);
+      }
+    };
+  }
+
   return (
-    <div className="product flex items-center ma2">
-      <img className="product-image w-10" src={ images[product.item] } alt="toilet_paper" />
-      <div className="product-timeline flex flex-grow-1 h3">
+    <div id={product.item} className="product">
+      <img className="product-image" src={ images[product.item] } alt={product.item} />
+      <div className="product-timeline">
         { productsList }
       </div>
-      <div className="vote flex flex-column ml2">
-        <button className="f6 link dim ba ph3 pv2 mb2 dib black">SI</button>
-        <button className="f6 link dim ba ph3 pv2 mb2 dib black">NO</button>
+      <div className="vote">
+        <button 
+          data-product={product.item}
+          data-vote="true"
+          onClick={ handleVote }
+        >SI</button>
+        <button 
+          data-product={product.item}
+          data-vote="false"
+          onClick={ handleVote }
+        >NO</button>
       </div>
     </div>
   );

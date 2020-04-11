@@ -8,16 +8,18 @@ const Loader = ({ loading }) => {
 
   if(loading) {
     myLoader = <Fragment>
-    <div className="my-loader">
-      <div className="lds-roller">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+    <div className="wrapper">
+      <div className="my-loader">
+        <div className="lds-roller">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </div>
     </div>
     </Fragment>;
