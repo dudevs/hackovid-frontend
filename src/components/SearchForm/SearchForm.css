@@ -8,27 +8,31 @@
 .search-input {
   background: white;
   padding: 0.5rem;
-  width: 100%;
+  width: 75%;
   font-weight: 600;
-  /* border: 1rem solid; */
-  /* border-radius: 10px; */
 }
 
 .search-button {
-  padding: 2vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: pointer;
+  padding: 1.5rem;
   margin: 0.5rem;
-  width: 45vw;
-  /* font-size: 1.4rem; */
-  font-size: 4vw;
-  font-weight: 400;
+  width: 50%;
+  max-width: 440px;
+  font-size: x-large;
+  font-weight: bold;
   border-width: 0;
   border-radius: 0.25rem;
-  background: #c7ac97;
-  color: black;
+  background: #e4e4e4;
+  color: rgba(0, 0, 0, 0.6);
   text-transform: uppercase;
   transition: all 0.2s;
 }
 
 .search-button:hover {
-  background: #a78c77;
+  background: rgb(187, 187, 187);
 }

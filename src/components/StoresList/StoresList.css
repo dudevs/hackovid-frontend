@@ -7,6 +7,9 @@
 }
 
 .store {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
   border-radius: 100px;
   width: 75%;
@@ -20,11 +23,28 @@
   cursor: pointer;
 }
 
-.store h1 {
-  font-size: 5vw;
+.store * {
+  margin: 0.5rem 0;
 }
-.store p {
-  font-size: 2.5vw;
+
+.store h1 {
+  width: 95%;
+  font-size: xx-large;
+  background-color: #000000;
+  color: transparent;
+  text-shadow: 0px 2px 3px rgba(255,255,255,0.5);
+  -webkit-background-clip: text;
+     -moz-background-clip: text;
+          background-clip: text;
+}
+
+.store h3 {
+  font-size: medium;
+}
+
+.store span {
+  font-size: small;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 @keyframes slide {

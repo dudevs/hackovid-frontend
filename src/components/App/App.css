@@ -1,5 +1,12 @@
 .App {
   text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.App .limit-width {
+  width: 100%;
+  max-width: 1200px;
 }
 
 .App-logo {

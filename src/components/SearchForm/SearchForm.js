@@ -17,12 +17,12 @@ const SearchForm = ({ geoFindMe, findAddress, onInputChange }) => {
       <div className="w-100">
         <button
           className="search-button"
-          onClick={ findAddress }
-        >Buscar adreça</button>
-        <button
-          className="search-button"
           onClick={ geoFindMe }
         >Localitza'm</button>
+        <button
+          className="search-button"
+          onClick={ findAddress }
+        >Buscar adreça</button>
         <input type="submit" onSubmit={ findAddress } hidden/>
       </div>
       

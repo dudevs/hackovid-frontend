@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { baby_food, canned_food, eggs, flour, fruit, hand_soap, milk, oil, pasta, rice, toilet_paper, vegetables, water } from '../../../images';
 import TimePiece from './TimePiece/TimePiece';
 import { fromUnixTime, getUnixTime, startOfMinute, subMinutes } from 'date-fns';
@@ -21,13 +20,7 @@ const images = {
   water: water
 }
 
-/* eslint-disable*/
-const hardCodedDate = fromUnixTime(1586485054); // FORMAT DATE Thu Apr 09 2020 19:17:34
-const hardCodedDateLater = fromUnixTime(1586496274); // FORMAT DATE Thu Apr 09 2020 22:24:34
-const currentDate = Math.floor(Date.now()/1000); // FORMAT EPOCH IN SECONDS
-/* eslint-enable */
-
-const ProductTimeline = ({ product, state, getTimeline }) => {
+const ProductTimeline = ({ baseProduct, dbProduct, state, getTimeline, BASE_ENDPOINT }) => {
 
   const { TIMELINE_SPLIT_COUNT, MINUTES_PER_PIECE } = state.options;
 
@@ -39,7 +32,7 @@ const ProductTimeline = ({ product, state, getTimeline }) => {
   };
 
   const lastExactMinute = () => {
-    const lastMin = startOfMinute(hardCodedDateLater);
+    const lastMin = startOfMinute(Date.now());
     return subMinutes(lastMin, lastMin.getMinutes() % MINUTES_PER_PIECE);
   }
   
@@ -47,8 +40,13 @@ const ProductTimeline = ({ product, state, getTimeline }) => {
   let myTimeline = [];
   [...Array(TIMELINE_SPLIT_COUNT)].forEach(() => {
     const obj = {};
-    obj.timestamp = getUnixTime(timePiece)
-    const [ doWeHaveIt ] = product.timeline.filter(stamp => stamp.timestamp === obj.timestamp);
+    obj.timestamp = getUnixTime(timePiece);
+    let doWeHaveIt = false;
+    if(dbProduct) {
+      [ doWeHaveIt ] = dbProduct.timeline.filter(stamp => {
+        return stamp.timestamp === obj.timestamp;
+      });
+    }
     if(doWeHaveIt) {
       obj.upvote = doWeHaveIt.upvote;
       obj.downvote = doWeHaveIt.downvote;
@@ -69,44 +67,30 @@ const ProductTimeline = ({ product, state, getTimeline }) => {
 
   const handleVote = async (e) => {
     const { product, vote } = e.currentTarget.dataset;
-    const baseEndpoint = `https://localhost:5001/api/supermarket`;
-    const url = `${baseEndpoint}/${state.selectedStore}/basicgood/${product}?status=${vote}`;
-    console.log(url);
+    const url = `${BASE_ENDPOINT}/supermarket/${state.selectedStore}/basicgood/${product}?status=${vote}`;
     try{
-      await apiCall('http://www.mocky.io/v2/5e9097eb330000016e27d8f3', {method: 'POST'}).catch(handleError);
-      const newProducts = 'http://www.mocky.io/v2/5e916be53300001455e9ce8d';
-      getTimeline(newProducts);
+      await apiCall(url, "POST").catch(handleError);
+      getTimeline().catch(handleError);
     }
     catch(err){
-      switch(err) {
-        case "400":
-          console.log('Error ' + err);
-          alert('Hi ha hagut un error, prova-ho més tard');
-          break;
-        case "500":    
-        console.log('Error ' + err);
-        alert('El servei no està disponible');
-          break;
-        default:
-          console.log('Error ' + err);
-      }
+      handleError(err);
     };
   }
 
   return (
-    <div id={product.item} className="product">
-      <img className="product-image" src={ images[product.item] } alt={product.item} />
+    <div id={baseProduct.item} className="product">
+      <img className="product-image" src={ images[baseProduct.item] } alt={baseProduct.item} />
       <div className="product-timeline">
         { productsList }
       </div>
       <div className="vote">
         <button 
-          data-product={product.item}
+          data-product={baseProduct.item}
           data-vote="true"
           onClick={ handleVote }
         >SI</button>
         <button 
-          data-product={product.item}
+          data-product={baseProduct.item}
           data-vote="false"
           onClick={ handleVote }
         >NO</button>
