@@ -30,6 +30,7 @@ class App extends Component {
     this.state = initialState;
   };
 
+  // get the user location, save it to state, call the function to search stores from location
   geoFindMe = (e) => {
     e.preventDefault();
     this.setState(initialState);
@@ -54,14 +55,15 @@ class App extends Component {
     }
   }
 
+  // saves the current form input value to state
   onInputChange = (e) => {
     this.setState({input: e.target.value});
   }
 
+  // takes the value from the search form, call the function to search stores from address
   findAddress = (e) => {
     e.preventDefault();
-    const search = document.querySelector('.search-input');
-    search.value = '';
+    this.setState(initialState);
     if(!this.state.input) return;
     if(this.state.input === 'rickroll') {
       window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
@@ -71,7 +73,10 @@ class App extends Component {
     this.searchStores(url).catch(handleError);
   }
 
+  // calls the API to get stores from current location or from address
   searchStores = async (url) => {
+    const search = document.querySelector('.search-form input');
+    search.value = '';
     try{
       this.setState({loading: true})
       const stores = await apiCall(url, "GET");
@@ -82,11 +87,14 @@ class App extends Component {
     }
   }
 
+  // save the selected store in state, call function to get the timeline of that store
   selectStore = async (e) => {
     await this.setState({selectedStore : e.currentTarget.id});
     this.getTimeline().catch(handleError);
   }
 
+  // calls the API to get the timeline of the selected store from our database
+  // more functionality about the timeline in the ProductTimeline component
   getTimeline = async () => {
     const url = `${BASE_ENDPOINT}/supermarket/${this.state.selectedStore}`;
     try{

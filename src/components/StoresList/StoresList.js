@@ -5,6 +5,8 @@ import './StoresList.css';
 const StoresList = ({ selectStore, nearStores, selectedStore }) => {
   const store = nearStores.find(store => store.id === selectedStore);
   let storeButton;
+  
+  // check if the user has selected a store. if not show all the stores 
   if (selectedStore) {
     storeButton = <StoreButton store={store} selectStore={selectStore}/>
   } else {

@@ -7,26 +7,23 @@ const SearchForm = ({ geoFindMe, findAddress, onInputChange }) => {
 
   return (
     <form className="search-form">
-      <input
-        className="search-input"
-        type="text" 
-        placeholder="Adreça"
-        onChange={ onInputChange }
-        onSubmit={ findAddress }
-      ></input>
-      <div className="w-100">
+      <div className="search-address">
+        <input
+          type="text" 
+          placeholder="Adreça"
+          onChange={ onInputChange }
+          onSubmit={ findAddress }
+        ></input>
         <button
-          className="search-button"
-          onClick={ geoFindMe }
-        >Localitza'm</button>
-        <button
-          className="search-button"
+          className="address"
           onClick={ findAddress }
-        >Buscar adreça</button>
+        >Buscar</button>
         <input type="submit" onSubmit={ findAddress } hidden/>
       </div>
-      
-
+      <button
+        className="locate"
+        onClick={ geoFindMe }
+      >Localitza'm</button>
     </form>
   );
 }

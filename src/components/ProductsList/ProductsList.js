@@ -2,7 +2,7 @@ import React from 'react';
 import ProductTimeline from './ProductTimeline/ProductTimeline';
 import { Fragment } from 'react';
 import './ProductsList.css';
-import { baseProducts } from './baseProducts';
+import { baseProducts } from '../../lib/baseProducts';
 
 
 const ProductsList = ({ state, getTimeline, BASE_ENDPOINT }) => {
@@ -10,7 +10,10 @@ const ProductsList = ({ state, getTimeline, BASE_ENDPOINT }) => {
   let productTimeline;
   let comment;
 
-  if(state.selectedStore && state.storeTimeline.length) {
+  // check if there is a selected store and a timeline received from the database
+  if(state.selectedStore) {
+
+    // create a ProductTimeline component for each of our products using an empty timeline from src/lib/baseProducts.js
     productTimeline = baseProducts.map(baseProduct => {
       const [ dbProduct ] = state.storeTimeline.filter(store => store.item === baseProduct.item);
 
