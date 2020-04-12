@@ -92,11 +92,13 @@ const ProductTimeline = ({ baseProduct, dbProduct, state, getTimeline, BASE_ENDP
       </div>
       <div className="vote">
         <button 
+          className="green"
           data-product={baseProduct.item}
           data-vote="true"
           onClick={ handleVote }
         >SI</button>
         <button 
+          className="red"
           data-product={baseProduct.item}
           data-vote="false"
           onClick={ handleVote }
